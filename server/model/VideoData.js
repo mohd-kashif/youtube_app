@@ -15,7 +15,8 @@ var schema = new mongoose.Schema({
     },
     thumbnail_urls : {
         type : String,
-    }
+    },
+    created_at: { type: Date, required: true, default: Date.now }
 })
 
 const videoData = mongoose.model('video_data', schema)

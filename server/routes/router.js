@@ -1,7 +1,8 @@
 const express = require("express")
 const route = express.Router();
-const HomeController = require("../controller/HomeController")
+const YoutubeController = require("../controller/YoutubeController")
 
 
-route.get('/', HomeController.homeRoute)
+route.get('/', YoutubeController.homeRoute)
+route.get('/search', YoutubeController.searchRoute)
 module.exports = route;

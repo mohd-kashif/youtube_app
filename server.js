@@ -9,7 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 8080
 
 setAppEnv();
-fetchYoutubeData();
+// setInterval(function () {
+//     fetchYoutubeData();
+// }, 10000);
 module.exports = app;
 
 function setAppEnv() {
