@@ -1,5 +1,6 @@
 var request = require("request");
 const videoData = require("../model/VideoData");
+const moment= require('moment') 
 var pageToken = ''
 
 const fetchYoutubeData = async () => {
@@ -54,12 +55,13 @@ function getThumbNailUrls(thumbnailData) {
 }
 
 function getYoutubeApiOptions() {
+    var datePublishedAfter = getDatePublishedAfter();
     return {
         method: 'GET',
         url: process.env.YOUTUBE_SEARCH_API_URI,
         qs: {
             order: process.env.YOUTUBE_API_RESPONSE_ORDER,
-            publishedAfter: '2021-06-01T00:00:00Z',
+            publishedAfter: datePublishedAfter,
             type: process.env.YOUTUBE_API_RESPONSE_TYPE,
             key: process.env.API_KEY,
             part: process.env.YOUTUBE_API_RESPONSE_SNIPPET,
@@ -67,6 +69,20 @@ function getYoutubeApiOptions() {
             pageToken: pageToken
         }
     };
+}
+
+function getDatePublishedAfter() {
+    var datePublishedAfter = '';
+    var localTime = moment().format('YYYY-MM-DD');
+    var proposedDate = process.env.PROPOSED_DATE;
+    if (proposedDate > localTime) {
+        datePublishedAfter = localTime;
+    }
+    else {
+        datePublishedAfter = proposedDate;
+    }
+    datePublishedAfter = datePublishedAfter + "T00:00:00.000Z";
+    return datePublishedAfter;
 }
 
 function escapeRegex(text) {
