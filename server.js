@@ -3,14 +3,14 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const connectDB = require("./server/database/connection")
-const YoutubeController = require("./server/controller/YoutubeController")
+const YoutubeService = require("./server/services/YoutubeService")
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080
 
 setAppEnv();
 setInterval(function () {
-    YoutubeController.fetchYoutubeData();
+    YoutubeService.fetchYoutubeData();
 }, 10000);
 module.exports = app;
 

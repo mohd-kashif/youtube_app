@@ -21,4 +21,15 @@ var schema = new mongoose.Schema({
 
 const videoData = mongoose.model('video_data', schema)
 
-module.exports = videoData
+const saveDataToCollection = (data) => {
+    new videoData(data).save(function (error, data) {
+        if (error)
+            throw new Error(error);
+        console.log("youtube videos data inserted");
+    });
+}
+
+module.exports = {
+    videoData,
+    saveDataToCollection
+}
