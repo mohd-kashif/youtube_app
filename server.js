@@ -12,7 +12,6 @@ setAppEnv();
 setInterval(function () {
     YoutubeService.fetchYoutubeData();
 }, 10000);
-module.exports = app;
 
 function setAppEnv() {
     dotenv.config({path:'config.env'})
@@ -25,3 +24,5 @@ function setAppEnv() {
     app.use('/', require('./server/routes/router'));
     app.listen(PORT, () => { console.log('Server is Running on http://localhost:' + PORT); });
 }
+
+module.exports = app;

@@ -1,51 +1,18 @@
 const videoData = require("../model/VideoData");
+const YoutubeService = require("../services/YoutubeService")
 
 const homeRoute = (req, res) => {
     res.render("homepage_view")
 }
 
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
-
 const searchRoute = async (req, res) => {
     try {
-        let video_title = req.query.video_title;
-        if (video_title === undefined) {
-            video_title = ''
-        }
-        console.log(video_title)
-        const query = {
-            $or: [{
-                'title': new RegExp(escapeRegex(video_title), 'i')
-            }, {
-                'description': new RegExp(escapeRegex(video_title), 'i')
-            }]
-        }
-        const options = {
-            sort: {
-                'publishing_datetime': -1
-            },
-            projection: {
-                _id: 0,
-                video_id: 1,
-                title: 1,
-                description: 1,
-                publishing_datetime: 1
-
-            },
-        };
-        var result = await videoData.find(query, {}, options)
-        return res.status(200).send({
-            success: true,
-            data: result
-        });
+        let videoTitle = checkAndSetDefaultTitile(req)
+        var result = await YoutubeService.searchVideosData(videoTitle)
+        return sendSuccessResponse(res, result);
     } catch (err) {
         console.log(err);
-        res.status(500).send({
-            success: false,
-            data: err
-        });
+        return sendFailureResponse(res, err);
     }
 }
 
@@ -54,32 +21,35 @@ const getVideos = async (req, res) => {
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
         const skipIndex = (page - 1) * limit;
-        const query = {}
-        const options = {
-            sort: {
-                'publishing_datetime': -1
-            },
-            projection: {
-                _id: 0,
-                video_id: 1,
-                title: 1,
-                description: 1,
-                publishing_datetime: 1
-
-            },
-        };
-        var result = await videoData.find(query, {}, options).limit(limit).skip(skipIndex)
-        return res.status(200).send({
-            success: true,
-            data: result
-        });
+        var result = await YoutubeService.getVideos(limit, skipIndex)
+        return sendSuccessResponse(res, result)
     } catch (err) {
         console.log(err);
-        res.status(500).send({
-            success: false,
-            data: err
-        });
+        return sendFailureResponse(res, err)
     }
+}
+
+
+function sendFailureResponse(res, err) {
+    return res.status(500).send({
+        success: false,
+        data: err
+    });
+}
+
+function sendSuccessResponse(res, result) {
+    return res.status(200).send({
+        success: true,
+        data: result
+    });
+}
+
+function checkAndSetDefaultTitile(req) {
+    let videoTitle = req.query.video_title;
+    if (videoTitle === undefined) {
+        videoTitle = '';
+    }
+    return videoTitle;
 }
 
 module.exports = {

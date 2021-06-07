@@ -6,7 +6,7 @@ const fetchYoutubeData = async () => {
     try {
         var options = getYoutubeApiOptions();
         request(options, function (error, response, body) {
-            if (error) 
+            if (error)
                 throw new Error(error);
             body = JSON.parse(body)
             setPageToken(body);
@@ -15,10 +15,6 @@ const fetchYoutubeData = async () => {
     } catch (err) {
         console.log(err);
     }
-}
-
-module.exports = {
-    fetchYoutubeData
 }
 
 function setPageToken(body) {
@@ -71,4 +67,53 @@ function getYoutubeApiOptions() {
             pageToken: pageToken
         }
     };
+}
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+const searchVideosData = (videoTitle) => {
+    const query = createSearchQuery(videoTitle)
+    const options = createOptionsForQuery();
+    var result = videoData.getSearchQueryResult(query, options)
+    return result
+}
+
+const getVideos = (limit, skipIndex) => {
+    const query = {}
+    const options = createOptionsForQuery();
+    var result = videoData.getAllVideos(query, options, limit, skipIndex)
+    return result
+}
+
+function createOptionsForQuery() {
+    return {
+        sort: {
+            'publishing_datetime': -1
+        },
+        projection: {
+            _id: 0,
+            video_id: 1,
+            title: 1,
+            description: 1,
+            publishing_datetime: 1
+        },
+    };
+}
+
+function createSearchQuery(videoTitle) {
+    return {
+        $or: [{
+            'title': new RegExp(escapeRegex(videoTitle), 'i')
+        }, {
+            'description': new RegExp(escapeRegex(videoTitle), 'i')
+        }]
+    };
+}
+
+module.exports = {
+    fetchYoutubeData,
+    searchVideosData,
+    getVideos
 }

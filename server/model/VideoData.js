@@ -19,17 +19,26 @@ var schema = new mongoose.Schema({
     created_at: { type: Date, required: true, default: Date.now }
 })
 
-const videoData = mongoose.model('video_data', schema)
+let Videos = mongoose.model('video_data', schema);
 
 const saveDataToCollection = (data) => {
-    new videoData(data).save(function (error, data) {
+    new Videos(data).save(function (error, data) {
         if (error)
             throw new Error(error);
         console.log("youtube videos data inserted");
     });
 }
 
+const getSearchQueryResult = (query, options) => {
+    return Videos.find(query, {}, options);
+}
+
+const getAllVideos = (query, options, limit, skipIndex) => {
+    return Videos.find(query, {}, options).limit(limit).skip(skipIndex);
+}
+
 module.exports = {
-    videoData,
-    saveDataToCollection
+    saveDataToCollection,
+    getSearchQueryResult,
+    getAllVideos
 }
