@@ -56,14 +56,14 @@ function getThumbNailUrls(thumbnailData) {
 function getYoutubeApiOptions() {
     return {
         method: 'GET',
-        url: 'https://youtube.googleapis.com/youtube/v3/search',
+        url: process.env.YOUTUBE_SEARCH_API_URI,
         qs: {
-            order: 'date',
+            order: process.env.YOUTUBE_API_RESPONSE_ORDER,
             publishedAfter: '2021-06-01T00:00:00Z',
-            type: 'video',
-            key: 'AIzaSyDD1dhRnHZQPVCpVlagY-1cy5UsHts2yMs',
-            part: 'snippet',
-            q: 'football',
+            type: process.env.YOUTUBE_API_RESPONSE_TYPE,
+            key: process.env.API_KEY,
+            part: process.env.YOUTUBE_API_RESPONSE_SNIPPET,
+            q: process.env.YOUTUBE_API_RESPONSE_QUERY,
             pageToken: pageToken
         }
     };

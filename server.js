@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 setAppEnv();
 setInterval(function () {
     YoutubeService.fetchYoutubeData();
-}, 10000);
+}, process.env.VIDEO_FETCH_RATE);
 
 function setAppEnv() {
     dotenv.config({path:'config.env'})
