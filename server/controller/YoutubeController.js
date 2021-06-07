@@ -1,10 +1,9 @@
 var request = require("request");
 const videoData = require("../model/VideoData");
 const YouTubeService = require("../services/YoutubeService")
+var pageToken = ''
 
 const fetchYoutubeData = async () => {
-    console.log("start yt fetch")
-
     var options = {
         method: 'GET',
         url: 'https://youtube.googleapis.com/youtube/v3/search',
@@ -14,13 +13,16 @@ const fetchYoutubeData = async () => {
             type: 'video',
             key: 'AIzaSyDD1dhRnHZQPVCpVlagY-1cy5UsHts2yMs',
             part: 'snippet',
-            q: 'football'
+            q: 'football',
+            pageToken: pageToken
         }
     };
 
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         body = JSON.parse(body)
+        pageToken = body.nextPageToken
+        console.log(pageToken)
         for (var i = 0; i < body.pageInfo.resultsPerPage; i++) {
             var id = body.items[i].id.videoId
             var snippetData = body.items[i].snippet
@@ -41,7 +43,7 @@ const fetchYoutubeData = async () => {
             }
             new videoData(insertData).save(function (error, data) {
                 if (error) throw new Error(error);
-                console.log("data inserted")
+                console.log("youtube videos data inserted")
             });
         }
     });
@@ -59,14 +61,16 @@ function escapeRegex(text) {
 const searchRoute = async (req, res) => {
     try {
         let video_title = req.query.video_title;
-        const page = parseInt(req.query.page);
-        console.log(page);
-        const limit = parseInt(req.query.limit);
-        console.log(limit);
-        const skipIndex = (page - 1) * limit;
-        console.log(skipIndex);
+        if (video_title === undefined) {
+            video_title = ''
+        }
+        console.log(video_title)
         const query = {
-            'title': new RegExp(escapeRegex(video_title), 'i')
+            $or: [{
+                'title': new RegExp(escapeRegex(video_title), 'i')
+            }, {
+                'description': new RegExp(escapeRegex(video_title), 'i')
+            }]
         }
         const options = {
             sort: {
@@ -74,15 +78,47 @@ const searchRoute = async (req, res) => {
             },
             projection: {
                 _id: 0,
-                video_id : 1,
+                video_id: 1,
                 title: 1,
                 description: 1,
-                publishing_datetime : 1
+                publishing_datetime: 1
+
+            },
+        };
+        var result = await videoData.find(query, {}, options)
+        return res.status(200).send({
+            success: true,
+            data: result
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({
+            success: false,
+            data: err
+        });
+    }
+}
+
+const getVideos = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+        const skipIndex = (page - 1) * limit;
+        const query = {}
+        const options = {
+            sort: {
+                'publishing_datetime': -1
+            },
+            projection: {
+                _id: 0,
+                video_id: 1,
+                title: 1,
+                description: 1,
+                publishing_datetime: 1
 
             },
         };
         var result = await videoData.find(query, {}, options).limit(limit).skip(skipIndex)
-        console.log(result);
         return res.status(200).send({
             success: true,
             data: result
@@ -99,5 +135,6 @@ const searchRoute = async (req, res) => {
 module.exports = {
     fetchYoutubeData,
     homeRoute,
-    searchRoute
+    searchRoute,
+    getVideos
 }
