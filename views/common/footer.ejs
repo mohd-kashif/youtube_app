@@ -1,0 +1,127 @@
+    
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- chat tool -->
+    <script src="//code.tidio.co/a148mw1keucxtpwdk9sfe8qyk0cqowrr.js" async></script>
+    
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="asset/app-assets/vendors/js/charts/apexcharts.min.js"></script>
+    <script src="asset/app-assets/vendors/js/extensions/tether.min.js"></script>
+    <script src="asset/app-assets/vendors/js/extensions/shepherd.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="asset/app-assets/js/core/app-menu.js"></script>
+    <script src="asset/app-assets/js/core/app.js"></script>
+    <script src="asset/app-assets/js/scripts/components.js"></script>
+    <script src="asset/assets/js/validate.js"></script>
+    <script src="asset/app-assets/vendors/js/extensions/toastr.min.js"></script>
+    <!-- END: Theme JS-->
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script type="text/javascript">
+        
+        var isProcessing = false;
+        $(document).on('click','.payForPlan',function(){
+
+            var btnText = $('.payForPlan').text();
+            var btnhtml = '<i class="fa fa-spin fa-cog"></i> &nbsp;&nbsp;processing';
+            $('.payForPlan').html(btnhtml);
+            
+            if(!isProcessing){
+
+                isProcessing = true;
+                $.post('/payment/createOrder', function(data){
+
+                    var obj = $.parseJSON(data);
+                    $('.payForPlan').html(btnText);
+                    isProcessing = false;
+
+                    if(obj.status == 200){
+
+                        var options = {
+                            "key": obj.data.key,
+                            "amount": obj.data.amount,
+                            "currency": "INR",
+                            "name": obj.data.title,
+                            "description": obj.data.description,
+                            "image": "/static/assets/image/logo_expresspay.png",
+                            "order_id": obj.data.order_id,
+                            "handler": function (response){
+                                
+                                $.post('/payment/updateResponse', response, function (subData) {
+                                    
+                                    var subObj = $.parseJSON(subData);
+                                    if (subObj.status == 200) {
+                                        
+                                        toastr.success(subObj.msg, 'Success!');
+                                        setInterval(function(){ location.reload(); }, 3000);
+                                    } else {
+                                        toastr.error(subObj.msg, 'Sorry!');
+                                    }
+                                });
+                            },
+                            "prefill": {
+                                "name": obj.data.name,
+                                "email": obj.data.email,
+                                "contact": obj.data.mobile
+                            },
+                            // "notes": {
+                            //     "address": "Razorpay Corporate Office"
+                            // },
+                            "theme": {
+                                "color": "#F37254"
+                            },
+                            "modal": {
+                                "ondismiss": function () {
+                                    $.post('/payment/reject', { 'razorpay_order_id': obj.data.order_id }, function (data) {
+                                    });
+                                }
+                            },
+                        };
+
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    }else{
+                        toastr.error(obj.msg, 'Sorry!');
+                    }
+                });
+            }
+        })
+    </script>
+
+    <!-- BEGIN: Page JS-->
+
+    <script>
+        var loaderHtml = '<div class="spinner-border" style="width: 1rem; height: 1rem;" role="status"><span class="sr-only">Loading...</span></div>';
+        
+        $('#wallet_balance').click(function(){
+            
+            $('#wallet_balance_dropdown').html(loaderHtml);
+            
+            $.post('/user/walletBalance', function(data){
+                var obj = $.parseJSON(data);
+                if(obj.resp == 1){
+                    $('#wallet_balance_dropdown').html('&#8377; '+obj.data.net_balance);
+                }else{
+                    $('#wallet_balance_dropdown').html(obj.msg);
+                }
+            })
+        });
+
+        // $("input").attr("autocomplete", "off").css('text-transform','uppercase');
+        // $('input[name="email"]').attr("autocomplete", "off").css('text-transform','lowercase');
+        
+    </script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+
+</html>

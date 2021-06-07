@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+        content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Your Modern Day Payment Platform</title>
+    <link rel="apple-touch-icon" href="asset/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="asset//app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="asset//app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="asset//app-assets/vendors/css/charts/apexcharts.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/themes/semi-dark-layout.css">
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="asset/app-assets/css/pages/dashboard-analytics.css">
+
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="asset/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="asset/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern 2-columns navbar-floating footer-static  menu-expanded pace-done"
+    data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu floating-nav navbar-light navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-container content">
+                <div class="navbar-collapse" id="navbar-mobile">
+                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item mobile-menu d-xl-none mr-auto">
+                                <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                                    <i class="ficon feather icon-menu"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a class="dropdown-toggle nav-link" href="#">
+                                    <i class="feather icon-message-square"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="nav navbar-nav float-right">
+                        <li class="dropdown dropdown-language nav-item">
+                            <a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="feather icon-pocket"></i>
+                                <span id="wallet_balance" class="font-500" style="font-weight:500">Balance</span>
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdown-flag">
+                                <a class="dropdown-item" href="#" data-language="en">
+
+                                    <span id="wallet_balance_dropdown">
+
+                                    </span>
+
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item d-none d-lg-block">
+                            <a class="nav-link nav-link-expand">
+                                <i class="ficon feather icon-maximize"></i>
+                            </a>
+                        </li>
+
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <div class="user-nav d-sm-flex d-none">
+                                    <span
+                                        class="user-name text-bold-600"><?=$this->session->userdata('zoho_id');?>s</span>df
+                                    <span class="user-status">Available</span>
+                                </div>
+                                <span>
+                                    <img class="round" src="https://img.icons8.com/clouds/2x/user.png" alt="avatar"
+                                        height="40" width="40">
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="feather icon-user"></i> Edit Profile</a>
+                                <a class="dropdown-item" href="#"><i class="feather icon-check-square"></i> Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/logout"><i class="feather icon-power"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END: Header-->
+
+    <!-- BEGIN: Main Menu-->
+    <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mr-auto"><a class="navbar-brand" href="asset/assets/image/logo_expresspay.png">
+                        <div class="brand-logoa"></div>
+                        <h2 class="brand-text mb-0"><img src="asset/assets/image/logo_expresspay.png"></h2>
+                    </a></li>
+                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i
+                            class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i
+                            class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary"
+                            data-ticon="icon-disc"></i></a></li>
+            </ul>
+        </div>
+        <div class="shadow-bottom"></div>
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                <li class=" navigation-header">
+                    <span>Explore</span>
+                </li>
+                <li class=" nav-item">
+                <!-- <li class="<?=($tab == 'dashboard')?'active':''?>"> -->
+                    <a href="/dashboard">
+                        <i class="feather icon-circle"></i>
+                        <span class="menu-item" data-i18n="Analytics">Dashboard</span>
+                    </a>
+                </li>
+                <!-- <li class="<?=($tab == 'payout')?'active':''?>"> -->
+                    <a href="/payout">
+                        <i class="feather icon-upload-cloud"></i>
+                        <span class="menu-item" data-i18n="eCommerce">Payouts</span>
+                    </a>
+                </li>
+                <!-- <li class="<?=($tab == 'collection')?'active':''?>"> -->
+                    <a href="/collection"><i class="feather icon-download-cloud"></i>
+                        <span class="menu-item" data-i18n="eCollections">Collections</span>
+                    </a>
+                </li>
+                <!-- <li class="<?=($tab == 'quickbooks')?'active':''?>"> -->
+                    <a href="/quickbooks"><i class="feather icon-download-cloud"></i>
+                        <span class="menu-item" data-i18n="eCollections">QuickBooks Demo</span>
+                    </a>
+                </li>
+
+                <li class="navigation-header">
+                    <span>Reports</span>
+                </li>
+                <li class="<?=($tab == 'txnHistory')?'active':''?>">
+                    <a href="/reports/view">
+                        <i class="feather icon-eye"></i>
+                        <span class="menu-title" data-i18n="Disabled Menu">View Txns</span>
+                    </a>
+                </li>
+
+                <li class=" navigation-header"><span>Support</span>
+                </li>
+                <li class=" nav-item"><a href="/logout"><i class="feather icon-power"></i><span class="menu-title"
+                            data-i18n="logout">Logout</span></a>
+                </li>
+                <li class=" nav-item"><a href="#"><i class="feather icon-phone"></i><span class="menu-title"
+                            data-i18n="Contact">+91.9716366366</span></a>
+                </li>
+                <li class=" nav-item"><a href=""><i class="feather icon-email"></i><span class="menu-title"
+                            data-i18n="Raise Support">help@epayfinserve.com</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END: Main Menu-->
+
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
