@@ -19,6 +19,9 @@ var schema = new mongoose.Schema({
     created_at: { type: Date, required: true, default: Date.now }
 })
 
+setIndexes();
+
+
 let Videos = mongoose.model('video_data', schema);
 
 const saveDataToCollection = (data) => {
@@ -35,6 +38,12 @@ const getSearchQueryResult = (query, options) => {
 
 const getAllVideos = (query, options, limit, skipIndex) => {
     return Videos.find(query, {}, options).limit(limit).skip(skipIndex);
+}
+
+function setIndexes() {
+    schema.index({ video_id: 1 });
+    schema.index({ title: 1 });
+    schema.index({ description: 1 });
 }
 
 module.exports = {

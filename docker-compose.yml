@@ -1,0 +1,22 @@
+version: "3"
+services:
+  app:
+    container_name: youtube_app
+    restart: always
+    build: .
+    ports:
+      - "8000:8080"
+    volumes: 
+      - .:/usr/src/app
+    links:
+      - mongo
+  mongo:
+    container_name: mongo_docker
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - .docker/mongo/data/:/data/db
+      - .docker/mongo/configdb:/data/configdb
+      - .docker/mongo/log/:/var/log/mongodb
+      - .docker/mongo/db/:/var/lib/mongodb
