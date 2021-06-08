@@ -3,6 +3,12 @@ const videoData = require("../model/VideoData");
 const moment= require('moment') 
 var pageToken = ''
 
+const callYoutubeDataApi = () => {
+    setInterval(function () {
+        fetchYoutubeData();
+    }, process.env.VIDEO_FETCH_RATE);
+}
+
 const fetchYoutubeData = async () => {
     try {
         var options = getYoutubeApiOptions();
@@ -10,6 +16,9 @@ const fetchYoutubeData = async () => {
             if (error)
                 throw new Error(error);
             body = JSON.parse(body)
+            if(body.error !== undefined){
+                throw new Error(body.error.message);
+            }
             setPageToken(body);
             parseResponseAndSave(body);
         });
@@ -131,5 +140,6 @@ function createSearchQuery(videoTitle) {
 module.exports = {
     fetchYoutubeData,
     searchVideosData,
-    getVideos
+    getVideos,
+    callYoutubeDataApi
 }

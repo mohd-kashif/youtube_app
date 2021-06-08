@@ -9,9 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 8080
 
 setAppEnv();
-setInterval(function () {
-    YoutubeService.fetchYoutubeData();
-}, process.env.VIDEO_FETCH_RATE);
+YoutubeService.callYoutubeDataApi();
 
 function setAppEnv() {
     dotenv.config({path:'config.env'})
